@@ -1,17 +1,21 @@
 const readline = require('readline');
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
 
 /********************************* CONSTANTS *********************************/
 const VALID_MOVES = {
   r: {
-    name: 'Rock',
+    name: 'Rock 🪨',
     winsAgainst: 's'
   },
   p: {
-    name: 'Paper',
+    name: 'Paper 📃',
     winsAgainst: 'r'
   },
   s: {
-    name: 'Scissors',
+    name: 'Scissors ✂️',
     winsAgainst: 'p'
   }
 };
@@ -25,82 +29,83 @@ let ties = 0;
 
 /***************************** HELPER FUNCTIONS ******************************/
 function printHelp() {
-  // Your code here
+    console.log("  Type 'r' for Rock");
+    console.log("  Type 'p' for Paper");
+    console.log("  Type 's' for Scissors");
+    console.log("  Type 'q' to quit");
+    console.log("  Type 'h' for a list of valid commands\n");
+
+    rl.question('☠️ ', promptInput);
 }
 
 function getWinner(move1, move2) {
-  // Your code here
+  let cmd = move1;
+  let cpu = move2;
+
+  if (cmd == cpu) {
+    console.log("You tie.\n");
+    ties++;
+    return;
+  }
+
+  if ( VALID_MOVES[cmd].winsAgainst == cpu) {
+    console.log('You win!\n');
+    wins++;
+    return
+  }
+
+  console.log('You lose...\n');
+  losses++;
 }
 
 function getCPUMove() {
-  // Your code here
+  const keys = ['r', 's', 'p'];
+  let cpuMoveKey = '';
+
+  for (let i = 0; i < 15; i++) {
+    let randomIndex = Math.floor(Math.random() * keys.length);
+    cpuMoveKey = keys[randomIndex];
+  }
+
+  return cpuMoveKey;
+
 }
 
 function processMove(cmd, cpu) {
-  // Your code here
+  let name1 = VALID_MOVES[cmd].name;
+  let name2 = VALID_MOVES[cpu].name;
+
+  console.log(`You pick ${name1}, computer picks ${name2}.`);
+  getWinner(cmd, cpu);
+  rl.question('☠️: ', promptInput);
 }
 
 /******************************* MAIN FUNCTION *******************************/
-function promptInput(rl) {
-  console.log(`${wins} wins - ${losses} losses - ${ties} ties`);
-  rl.question('> ', (cmd) => {
+function promptInput(cmd) {
     cmd = cmd.toLowerCase();
 
     if (cmd === 'h') {
       console.log("\nHelp:\n");
-      console.log("  Type 'r' for Rock");
-      console.log("  Type 'p' for Paper");
-      console.log("  Type 's' for Scissors");
-      console.log("  Type 'q' to quit");
-      console.log("  Type 'h' for a list of valid commands\n");
+      printHelp();
+
     } else if (cmd === 'q') {
       rl.close();
       return;
+
     } else if (VALID_MOVES[cmd]){
-      const validMoveKeys = Object.keys(VALID_MOVES);
-      const randomIndex = Math.floor(Math.random() * validMoveKeys.length);
-      const cpu = validMoveKeys[randomIndex];
+      const cpu = getCPUMove();
+      processMove(cmd, cpu);
 
-      console.log(`You pick ${cmd}, computer picks ${cpu}.`);
-
-      if (cmd === cpu) { // tie
-        console.log("You tie.\n");
-        ties++;
-      }
-      else if (VALID_MOVES[cmd].winsAgainst === cpu) { // win
-        console.log("You win!\n");
-        wins++;
-      } else { // loss
-        console.log("You lose...\n");
-        losses++;
-      }
     } else {
       console.log("\nInvalid command.\n");
-      console.log("  Type 'r' for Rock");
-      console.log("  Type 'p' for Paper");
-      console.log("  Type 's' for Scissors");
-      console.log("  Type 'q' to quit");
-      console.log("  Type 'h' for a list of valid commands\n");
+      printHelp();
     }
-
-    promptInput(rl);
-  });
 }
 
 /****************************** INITIALIZE GAME ******************************/
 function initializeGame() {
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-  });
   console.log("Welcome to Rock/Paper/Scissors\n");
-  console.log("  Type 'r' for Rock");
-  console.log("  Type 'p' for Paper");
-  console.log("  Type 's' for Scissors");
-  console.log("  Type 'q' to quit");
-  console.log("  Type 'h' for a list of valid commands\n");
-
-  promptInput(rl);
+  printHelp();
 }
 
 // start the game if running this file directly, `node game.js`

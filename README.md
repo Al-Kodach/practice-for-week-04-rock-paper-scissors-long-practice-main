@@ -103,6 +103,7 @@ are testing for!**
 .
 .
 .
+
 .
 .
 .
@@ -298,9 +299,17 @@ use in <code>processMove(cmd, cpu)</code> instead of the
 Do you see in any of the helper functions, main function, or when initializing
 the game that can use refactoring?
 
-<details><summary>Hint:</summary>Take a look at the section for initializing
-the game, is there any familiar code there that you can refactor using the
-<code>printHelp()</code> function?</details>
+<details>
+  <summary>
+    Hint:
+  </summary>
+    Take a look at the section for initializing
+    the game, is there any familiar code there that you can refactor using the
+  <code>
+    printHelp()
+  </code>
+    function?
+</details>
 
 ## Bonus Phase 6: Improve the Experience
 
